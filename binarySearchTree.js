@@ -26,6 +26,25 @@ function removeDuplicates (array, index = 0) {
   }
 }
 
+function sortedArrayToBST(arr, start = 0, end = arr.length - 1)
+{
+    /* Base Case */
+    if (start > end)
+    {
+        return null;
+    }
+    /* Get the middle element and make it root */
+    var mid = parseInt((start + end) / 2);
+    var node = NodeFactory(arr[mid]);
+    /* Recursively construct the left subtree and make it
+     left child of root */
+    node.left = sortedArrayToBST(arr, start, mid - 1);
+    /* Recursively construct the right subtree and make it
+     right child of root */
+    node.right = sortedArrayToBST(arr, mid + 1, end);
+    return node;
+}
+
 /** Main functions */
 
 const NodeFactory = (value) => {
@@ -42,8 +61,7 @@ const TreeFactory = (array) => {
   function buildTree () {
     const sortedArray = mergeSort(array);
     const noDuplicatesArray = removeDuplicates(sortedArray);
-    const midValue = noDuplicatesArray[parseInt((noDuplicatesArray.length - 1) / 2)];
-    return NodeFactory(midValue);
+    return sortedArrayToBST(noDuplicatesArray);
   }
 };
 
