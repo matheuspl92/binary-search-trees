@@ -9,3 +9,7 @@ const NodeFactory = (data) => {
 
   return { data, left, right }
 };
+
+const TreeFactory = (array) => {
+  let root = null;
+};
