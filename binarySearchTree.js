@@ -73,8 +73,18 @@ const TreeFactory = (array) => {
         }
     }
 
+    const _insert = (value, node = root) => {
+        if (value === node.data) {
+            console.log('TreeFactory.insert() ERROR: value already exist inside the tree.');
+            return;
+        }
+        if (value < node.data) (node.left) ? _insert(value, node.left) : node.left = NodeFactory(value);
+        if (value > node.data) (node.right) ? _insert(value, node.right) : node.right = NodeFactory(value);
+    }
+
     return {
         print: _prettyPrint,
+        insert: _insert,
     }
 };
 
