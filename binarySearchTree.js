@@ -4,7 +4,7 @@
 
 /** Auxiliary functions */
 
-function mergeSort(array) {
+function mergeSort (array) {
     if (array.length === 1) return array;
     const sortedArray = [];
     const leftArray = mergeSort(array.slice(0, array.length / 2));
@@ -15,7 +15,7 @@ function mergeSort(array) {
     return (leftArray.length === 0) ? sortedArray.concat(rightArray) : sortedArray.concat(leftArray);
 }
 
-function removeDuplicates(array, index = 0) {
+function removeDuplicates (array, index = 0) {
     const copy = array.slice();
     if (index >= copy.length - 1) return copy;
     if (copy[index] === copy[index + 1]) {
@@ -26,7 +26,7 @@ function removeDuplicates(array, index = 0) {
     }
 }
 
-function sortedArrayToBST(arr, start = 0, end = arr.length - 1) {
+function sortedArrayToBST (arr, start = 0, end = arr.length - 1) {
     /* Base Case */
     if (start > end) {
         return null;
@@ -41,6 +41,11 @@ function sortedArrayToBST(arr, start = 0, end = arr.length - 1) {
      right child of root */
     node.right = sortedArrayToBST(arr, mid + 1, end);
     return node;
+}
+
+function findInorderSuccessor (node, parent) {
+    if (node.left === null) return {node, parent};
+    return findInorderSuccessor(node.left, node);
 }
 
 /** Main functions */
@@ -82,9 +87,103 @@ const TreeFactory = (array) => {
         if (value > node.data) (node.right) ? _insert(value, node.right) : node.right = NodeFactory(value);
     }
 
+    const _delete = (value, node = root, parent = null) => {
+        //Base case
+        if (node === null) return node;
+
+        //Recursion case
+        if (value < node.data) return _delete(value, node.left, node);
+        if (value > node.data) return _delete(value, node.right, node);
+
+        if (value === node.data) {
+            //In case the node is a leaf node, delete reference in parent
+            if (!node.left && !node.right) {
+                (parent.left === node) ? parent.left = null : parent.right = null;
+                return;
+
+            //In case the node has two children puts successor node in its place    
+            } else if (node.left && node.right) {
+                let inorderSuccessor = findInorderSuccessor(node.right, node);
+                //In case the successor found is actually the node right child
+                if (inorderSuccessor.parent === node) {
+                    node.data = inorderSuccessor.node.data;
+                    node.right = inorderSuccessor.node.right;
+                    return;
+                //In case the successor found has right child
+                } else if (inorderSuccessor.node.right) {
+                    node.data = inorderSuccessor.node.data;
+                    inorderSuccessor.parent.left = inorderSuccessor.node.right;
+                    return;
+                //In case the successor found is a leaf node
+                } else {
+                    node.data = inorderSuccessor.node.data;
+                    inorderSuccessor.parent.left = null;
+                    return;
+                }
+            } else {
+                //In case the node has only one child
+                if (node.left) {
+                    node.data = node.left.data;
+                    node.left = node.left.left;
+                    return;
+                } else {
+                    node.data = node.right.data;
+                    node.right = node.right.right;
+                    return;
+                }
+            }
+        }
+    }
+
+    /*const _delete = (value, node = root) => {
+        const leftChild = node.left;
+        const rightChild = node.right;
+
+        if (leftChild && leftChild.data === value) {
+            if (!leftChild.left && !leftChild.right) {
+                node.left = null;
+                return;
+            } else if (leftChild.left && leftChild.right) {
+                console.log('NODE HAS 2 CHILDREN');
+                return
+            } else {
+                if (leftChild.left) {
+                    node.left.data = leftChild.left.data;
+                    node.left.left = null;
+                } else {
+                    node.left.data = leftChild.right.data;
+                    node.left.right = null;
+                }
+            }
+        }
+        if (rightChild && rightChild.data === value) {
+            if (!rightChild.left && !rightChild.right) {
+                node.right = null;
+                return;
+            } else if (rightChild.left && rightChild.right) {
+                console.log('NODE HAS 2 CHILDREN');
+                return
+            } else {
+                if (rightChild.left) {
+                    node.right.data = rightChild.left.data;
+                    node.right.left = null;
+                    return
+                } else {
+                    node.right.data = rightChild.right.data;
+                    node.right.right = null;
+                    return
+                }
+            }
+        }
+
+        if (value < node.data && node.left) _delete(value, node.left);
+        if (value > node.data && node.right) _delete(value, node.right);
+    }*/
+
     return {
         print: _prettyPrint,
         insert: _insert,
+        delete: _delete,
     }
 };
 
