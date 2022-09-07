@@ -135,51 +135,6 @@ const TreeFactory = (array) => {
         }
     }
 
-    /*const _delete = (value, node = root) => {
-        const leftChild = node.left;
-        const rightChild = node.right;
-
-        if (leftChild && leftChild.data === value) {
-            if (!leftChild.left && !leftChild.right) {
-                node.left = null;
-                return;
-            } else if (leftChild.left && leftChild.right) {
-                console.log('NODE HAS 2 CHILDREN');
-                return
-            } else {
-                if (leftChild.left) {
-                    node.left.data = leftChild.left.data;
-                    node.left.left = null;
-                } else {
-                    node.left.data = leftChild.right.data;
-                    node.left.right = null;
-                }
-            }
-        }
-        if (rightChild && rightChild.data === value) {
-            if (!rightChild.left && !rightChild.right) {
-                node.right = null;
-                return;
-            } else if (rightChild.left && rightChild.right) {
-                console.log('NODE HAS 2 CHILDREN');
-                return
-            } else {
-                if (rightChild.left) {
-                    node.right.data = rightChild.left.data;
-                    node.right.left = null;
-                    return
-                } else {
-                    node.right.data = rightChild.right.data;
-                    node.right.right = null;
-                    return
-                }
-            }
-        }
-
-        if (value < node.data && node.left) _delete(value, node.left);
-        if (value > node.data && node.right) _delete(value, node.right);
-    }*/
-
     return {
         print: _prettyPrint,
         insert: _insert,
