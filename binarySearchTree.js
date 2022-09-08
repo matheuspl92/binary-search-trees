@@ -4,7 +4,7 @@
 
 /** Auxiliary functions */
 
-function mergeSort (array) {
+function mergeSort(array) {
     if (array.length === 1) return array;
     const sortedArray = [];
     const leftArray = mergeSort(array.slice(0, array.length / 2));
@@ -15,7 +15,7 @@ function mergeSort (array) {
     return (leftArray.length === 0) ? sortedArray.concat(rightArray) : sortedArray.concat(leftArray);
 }
 
-function removeDuplicates (array, index = 0) {
+function removeDuplicates(array, index = 0) {
     const copy = array.slice();
     if (index >= copy.length - 1) return copy;
     if (copy[index] === copy[index + 1]) {
@@ -26,7 +26,7 @@ function removeDuplicates (array, index = 0) {
     }
 }
 
-function sortedArrayToBST (arr, start = 0, end = arr.length - 1) {
+function sortedArrayToBST(arr, start = 0, end = arr.length - 1) {
     /* Base Case */
     if (start > end) {
         return null;
@@ -43,8 +43,8 @@ function sortedArrayToBST (arr, start = 0, end = arr.length - 1) {
     return node;
 }
 
-function findInorderSuccessor (node, parent) {
-    if (node.left === null) return {node, parent};
+function findInorderSuccessor(node, parent) {
+    if (node.left === null) return { node, parent };
     return findInorderSuccessor(node.left, node);
 }
 
@@ -101,7 +101,7 @@ const TreeFactory = (array) => {
                 (parent.left === node) ? parent.left = null : parent.right = null;
                 return;
 
-            //In case the node has two children puts successor node in its place    
+                //In case the node has two children puts successor node in its place    
             } else if (node.left && node.right) {
                 let inorderSuccessor = findInorderSuccessor(node.right, node);
                 //In case the successor found is actually the node right child
@@ -109,12 +109,12 @@ const TreeFactory = (array) => {
                     node.data = inorderSuccessor.node.data;
                     node.right = inorderSuccessor.node.right;
                     return;
-                //In case the successor found has right child
+                    //In case the successor found has right child
                 } else if (inorderSuccessor.node.right) {
                     node.data = inorderSuccessor.node.data;
                     inorderSuccessor.parent.left = inorderSuccessor.node.right;
                     return;
-                //In case the successor found is a leaf node
+                    //In case the successor found is a leaf node
                 } else {
                     node.data = inorderSuccessor.node.data;
                     inorderSuccessor.parent.left = null;
@@ -145,14 +145,33 @@ const TreeFactory = (array) => {
         return (value < node.data) ? _find(value, node.left) : _find(value, node.right);
     }
 
+    const _levelOrder = (func = null, queue = null, valuesArray = []) => {
+        let newQueue = [];
+
+        if (queue === null) queue = [root];
+
+        queue.forEach(node => {
+            (func !== null) ? func(node.data) : valuesArray.push(node.data);
+            if (node.left) newQueue.push(node.left);
+            if (node.right) newQueue.push(node.right);
+        });
+
+        if (newQueue.length === 0) {
+            console.log(valuesArray)
+            return (func === null) ? valuesArray : null;
+        }
+
+        return _levelOrder(func, newQueue, valuesArray);
+    }
+
     return {
         print: _prettyPrint,
         insert: _insert,
         delete: _delete,
         find: _find,
+        levelOrder: _levelOrder,
     }
 };
 
 const newTree = TreeFactory([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 18, 13]);
 newTree.print();
-console.log(newTree.find(666));
