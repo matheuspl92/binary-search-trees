@@ -164,12 +164,25 @@ const TreeFactory = (array) => {
         return _levelOrder(func, newQueue, valuesArray);
     }
 
+    const _inorder = (func = null, node = root, valuesArray = [], isFirstCall = true) => {
+        if (node === null) return null
+
+        if (node.left) _inorder(func, node.left, valuesArray, false);
+        (func) ? func(node.data) : valuesArray.push(node.data);
+        if (node.right) _inorder(func, node.right, valuesArray, false);
+
+        if (isFirstCall) return valuesArray;
+    }
+
     return {
         print: _prettyPrint,
         insert: _insert,
         delete: _delete,
         find: _find,
         levelOrder: _levelOrder,
+        inorder: _inorder,
+        /*preorder: _preorder,
+        postorder: _postorder,*/
     }
 };
 
