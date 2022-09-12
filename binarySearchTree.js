@@ -174,6 +174,26 @@ const TreeFactory = (array) => {
         if (isFirstCall) return valuesArray;
     }
 
+    const _preorder = (func = null, node = root, valuesArray = [], isFirstCall = true) => {
+        if (node === null) return null;
+
+        (func) ? func(node.data) : valuesArray.push(node.data);
+        if (node.left) _preorder(func, node.left, valuesArray, false);
+        if (node.right) _preorder(func, node.right, valuesArray, false);
+
+        if (isFirstCall) return valuesArray;
+    }
+
+    const _postorder = (func = null, node = root, valuesArray = [], isFirstCall = true) => {
+        if (node === null) return null;
+
+        if (node.left) _postorder(func, node.left, valuesArray, false);
+        if (node.right) _postorder(func, node.right, valuesArray, false);
+        (func) ? func(node.data) : valuesArray.push(node.data);
+
+        if (isFirstCall) return valuesArray;
+    }
+
     return {
         print: _prettyPrint,
         insert: _insert,
@@ -181,10 +201,13 @@ const TreeFactory = (array) => {
         find: _find,
         levelOrder: _levelOrder,
         inorder: _inorder,
-        /*preorder: _preorder,
-        postorder: _postorder,*/
+        preorder: _preorder,
+        postorder: _postorder,
     }
 };
 
 const newTree = TreeFactory([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 18, 13]);
 newTree.print();
+console.log(newTree.inorder());
+console.log(newTree.preorder());
+console.log(newTree.postorder());
