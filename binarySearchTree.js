@@ -221,6 +221,10 @@ const TreeFactory = (array) => {
         return (targetNode.data < node.data) ? _depth(targetNode, node.left, depth + 1) : _depth(targetNode, node.right, depth + 1);
     }
 
+    const _isBalanced = () => {
+        return (Math.abs(_height(root.left) - _height(root.right)) <= 1) 
+    }
+
     return {
         print: _prettyPrint,
         insert: _insert,
@@ -232,9 +236,10 @@ const TreeFactory = (array) => {
         postorder: _postorder,
         height: _height,
         depth: _depth,
+        isBalanced: _isBalanced,
     }
 };
 
 const newTree = TreeFactory([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 18, 13]);
 newTree.print();
-console.log(newTree.height(newTree.find(23)))
+
