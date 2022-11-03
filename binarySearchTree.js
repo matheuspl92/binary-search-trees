@@ -59,9 +59,9 @@ const NodeFactory = (value) => {
 };
 
 const TreeFactory = (array) => {
-    let root = _buildTree();
+    let root = _buildTree(array);
 
-    function _buildTree() {
+    function _buildTree(array) {
         const sortedArray = mergeSort(array);
         const noDuplicatesArray = removeDuplicates(sortedArray);
         console.log(noDuplicatesArray);
@@ -225,6 +225,10 @@ const TreeFactory = (array) => {
         return (Math.abs(_height(root.left) - _height(root.right)) <= 1) 
     }
 
+    const _rebalance = () => {
+        root = _buildTree(_inorder());
+    }
+
     return {
         print: _prettyPrint,
         insert: _insert,
@@ -237,9 +241,9 @@ const TreeFactory = (array) => {
         height: _height,
         depth: _depth,
         isBalanced: _isBalanced,
+        rebalance: _rebalance,
     }
 };
 
 const newTree = TreeFactory([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 18, 13]);
 newTree.print();
-
