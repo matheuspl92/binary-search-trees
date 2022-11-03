@@ -157,7 +157,6 @@ const TreeFactory = (array) => {
         });
 
         if (newQueue.length === 0) {
-            console.log(valuesArray)
             return (func === null) ? valuesArray : null;
         }
 
@@ -246,4 +245,22 @@ const TreeFactory = (array) => {
 };
 
 const newTree = TreeFactory([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 18, 13]);
+newTree.print();
+console.log(newTree.isBalanced());
+console.log(newTree.levelOrder());
+console.log(newTree.inorder());
+console.log(newTree.preorder());
+console.log(newTree.postorder());
+
+for (let i = 1; i <= 101; i ++) {
+    newTree.insert(23 * i);
+}
+
+console.log(newTree.isBalanced());
+newTree.rebalance();
+console.log(newTree.isBalanced());
+console.log(newTree.levelOrder());
+console.log(newTree.inorder());
+console.log(newTree.preorder());
+console.log(newTree.postorder());
 newTree.print();
