@@ -194,6 +194,33 @@ const TreeFactory = (array) => {
         if (isFirstCall) return valuesArray;
     }
 
+    const _height = (node, queue = null, height = 0) => {
+        let newQueue = [];
+
+        if (queue === null) queue = [node];
+
+        queue.forEach(node => {
+            if (node.left) newQueue.push(node.left);
+            if (node.right) newQueue.push(node.right);
+        });
+
+        if (newQueue.length === 0) {
+            return height;
+        }
+
+        return _height(node, newQueue, height + 1);
+    }
+
+    const _depth = (targetNode, node = root, depth = 0) => {
+        if (node === null) {
+            console.log('TreeFactory.depth() ALERT: value do not exist inside the tree.');
+            return null;
+        }
+        if (targetNode === node) return depth;
+
+        return (targetNode.data < node.data) ? _depth(targetNode, node.left, depth + 1) : _depth(targetNode, node.right, depth + 1);
+    }
+
     return {
         print: _prettyPrint,
         insert: _insert,
@@ -203,11 +230,11 @@ const TreeFactory = (array) => {
         inorder: _inorder,
         preorder: _preorder,
         postorder: _postorder,
+        height: _height,
+        depth: _depth,
     }
 };
 
 const newTree = TreeFactory([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 18, 13]);
 newTree.print();
-console.log(newTree.inorder());
-console.log(newTree.preorder());
-console.log(newTree.postorder());
+console.log(newTree.height(newTree.find(23)))
